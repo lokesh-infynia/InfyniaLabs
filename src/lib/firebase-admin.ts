@@ -1,4 +1,6 @@
 import * as admin from 'firebase-admin';
+import { cert } from 'firebase-admin/app';
+const serviceAccountKey = require('../../google.json');
 
 // This function initializes the Firebase Admin SDK.
 // It ensures that the SDK is initialized only once.
@@ -7,7 +9,7 @@ function getDb() {
     try {
       // Initialize the app without explicit credentials.
       // This works in environments where default credentials are not available.
-      admin.initializeApp();
+      admin.initializeApp({ credential: cert(serviceAccountKey) });
     } catch (e) {
       console.error('Firebase admin initialization error', e);
       throw new Error('Failed to initialize Firebase Admin SDK.');

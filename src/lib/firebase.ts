@@ -1,17 +1,18 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  projectId: 'infynia-labs',
-  appId: '1:177304616146:web:c0a17bdc95ffa9e11b410b',
-  storageBucket: 'infynia-labs.appspot.com',
-  apiKey: 'AIzaSyCde_rvio_M5fL-sBAbfHj4Nrgg3rSbiCY',
-  authDomain: 'infynia-labs.firebaseapp.com',
-  messagingSenderId: '177304616146',
+  apiKey: "AIzaSyCde_rvio_M5fL-sBAbfHj4Nrgg3rSbiCY",
+  authDomain: "infynia-labs.firebaseapp.com",
+  projectId: "infynia-labs",
+  storageBucket: "infynia-labs.firebasestorage.app",
+  messagingSenderId: "177304616146",
+  appId: "1:177304616146:web:c0a17bdc95ffa9e11b410b"
 };
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+// Initialize Firebase
+const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();

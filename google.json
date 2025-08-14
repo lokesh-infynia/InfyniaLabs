@@ -1,0 +1,14 @@
+{
+    "type": "service_account",
+    "project_id": "infynia-labs",
+    "private_key_id": "07f19c2ae478ac115a79bf3d8f3cf7eeda84400a",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/q//d1o/nLmXp\nFvzUnv4YOGXfSRbz811CegsalMSqZAuGxOkjInp2A2ISnjIhQzQamy0m+nBYwNa1\nQ1BURNL46DZq7em2tJt2sE1A+OsOyxKc6/BdMGtWOOttYiB8Mk5QeMF82o09tgY/\n9Ac9EO1etjiPtSR42jWqU6kKS93AcRheUuOBhvpMwFvHadyKpQ8ynKLc3CS1mBpx\nov0jmDwXvTtxIJKdsJ7OlJG9eUQH6I7KXNy2GY3M9AWLwLoClkmxNe91xPMsU2mk\no/vE4A80Uyg8S6AMVOOGKLLB9DKHOlMpDiEHtWh+JD4K4KbLzlHhSHGaIAF4g8ky\nBrA6e+D9AgMBAAECggEABN449ujqqbv3caaYUEwjdvkDuVqRXyvIrBYObyPlJNC6\nrDcXFsHa62FlncRv0IF08tILIQjOTqrDKUJm6WUAGLtJGoklXPMUWbzbkXFhAvSs\nadjiN3Ox3jQ+4n3SBmV+sLOIcoPYf38+hGRNxMLHzJaDND8tCHa+Uy+hxPWtUaRi\ncWrTnIKT3w2zH8u49KBJue49fn/UGeJy2qtdFwbTipLQ8GIB46O3I/RtsYx3pF/B\nUrd/Zfr9cA1i7ygf6HP5hlDfcI7JbQ7rpZy9Q0b6/7+bj1p1mmTnUQHv7L0Ygdcp\nw2QZTwDPZ8MyP3WqnvhABMFRJTzcYzDh4hEqRp8MTwKBgQDiGzJyQcTUno9M45Dq\nmRNI9FREitR5nBDBE4fZEW2vmT0bIbK8MKOjEOg9VW1hhXDQzbz/GfX6UP40w+w7\n7jDbDqgvUelHZ6T850uVFy5a7/sL4sGiiBbyY5DOEzugQOw65KgDbT4vbxxWzLEz\nJPel1DR1oojPGxxlFYmTLpoVOwKBgQDZA1XOehitiuI1VziR6znmgfW2aTRBQKnD\neK4OjkuupzPW6sZ2H+dpwjMcz67OdpBljmCi3JkrM4woNY6oSSrqKyTR1nY+DkxY\ngojKVpshRqKAoiEurZz1OXhznMzVzXgQ9A9DzpXriElX9EwzMEdVE5Adt8M9vPLz\n/7iBIEmfJwKBgGmUHYgwocJOj8dtc5u4AsNMI5Ul5nUqpMAjaIm5k6gtO9VRdO5f\nH+ni2S7alwq0jqtRhnDwJGXQMANfgQ2y+WkwfOQrsWxAP1BAiJCDlIeuC2HPbm+A\ncIaaa2Fupab86dHON43yEtl/XpJBXnTtTB5I6n4LeSqMFEQ3PFhXqGdFAoGAPcF/\nN6TzRN+TBA7wIEZKUdiF7gT+Q9t89A1xqt6/ltIqJGznUVI+7o+/L+HCIysGaIAd\n6/rO88ZVilPDZwx7U+w3LCfVuk8jVsS+3KXMu6l4MRbyTnBFjFtwdaYXfHheRKTP\ne0Jc04wTIx54WNDSW9mXV32l5/nPQbRx8v0XNl0CgYEAknRvcsA5gcV+AJxhDL/W\n69H0rDSQiX4dakVyNIqbs7/H2rEkJSMSzmxSejM0dZN2hzXq2MiAPFbUIGXPk7gx\n0CxvvFPYbhOzgMcRE4fdwAMrNRadn+1FVTyUcGVwhHu985o0Q1xssbcgd26R8vEH\ny73Uc433RysZFgTkkZhuq2I=\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-fbsvc@infynia-labs.iam.gserviceaccount.com",
+    "client_id": "102859576382658270355",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40infynia-labs.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+  
