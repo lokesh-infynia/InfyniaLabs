@@ -20,7 +20,7 @@ const InfinityLogo = () => (
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, signInWithGoogle, signOut } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
   
   const navLinks = [
     { href: "#mission", label: "Mission" },
@@ -29,6 +29,15 @@ export default function Header() {
     { href: "#rnd", label: "Research" },
     { href: "#roadmap", label: "Roadmap" },
   ];
+
+  const handleTalkToUsClick = () => {
+    if (user) {
+      const contactTrigger = document.getElementById('contact-trigger');
+      if(contactTrigger) contactTrigger.click();
+    } else {
+      signInWithGoogle();
+    }
+  }
 
   return (
     <header className="sticky top-0 z-40 bg-black/30 backdrop-blur-md border-b border-white/10">
@@ -43,9 +52,9 @@ export default function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-            <a href="#contact" className="hidden md:inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+            <Button onClick={handleTalkToUsClick} className="hidden md:inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
                 Talk to Us
-            </a>
+            </Button>
             <div className="md:hidden">
                 <Button onClick={() => setMenuOpen(!menuOpen)} variant="ghost" size="icon" className="p-2 rounded-lg border border-white/10">
                     <Menu />
@@ -59,7 +68,7 @@ export default function Header() {
                 {navLinks.map(link => (
                     <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="py-2 border-b border-white/10">{link.label}</a>
                 ))}
-                 <a href="#contact" onClick={() => setMenuOpen(false)} className="py-2">Talk to Us</a>
+                 <a href="#contact" onClick={() => { setMenuOpen(false); handleTalkToUsClick(); }} className="py-2">Talk to Us</a>
             </div>
         </div>
       )}

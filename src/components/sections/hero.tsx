@@ -28,7 +28,7 @@ export default function Hero() {
             </div>
             <div className="flex flex-wrap gap-4">
               <Button asChild size="lg" className="px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-                <a href="#products">Get BeatMyEMI</a>
+                <a href="https://beatmyemi.com" target="_blank" rel="noopener noreferrer">Get BeatMyEMI</a>
               </Button>
               <Button asChild size="lg" variant="outline" className="px-6 py-3 rounded-xl border border-white/15 backdrop-blur-md bg-white/5">
                 <a href="#products">Explore Products</a>

@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MessageSquare, Send, Loader2, User } from "lucide-react";
 import { handleChat } from "@/app/actions";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 interface Message {
   id: string;
@@ -40,6 +41,8 @@ export default function SmartContact() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { user, signInWithGoogle } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -50,9 +53,18 @@ export default function SmartContact() {
     }
   }, [messages]);
 
+  const handleOpenChange = (open: boolean) => {
+    if (open && !user) {
+      signInWithGoogle();
+      setIsOpen(false);
+    } else {
+      setIsOpen(open);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || !user) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -84,12 +96,13 @@ export default function SmartContact() {
   };
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <Button
           id="contact-trigger"
           className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg bg-gradient-to-r from-primary to-accent text-accent-foreground hover:opacity-90 focus:ring-accent"
           aria-label="Open smart contact chat"
+          onClick={() => handleOpenChange(true)}
         >
           <MessageSquare className="h-8 w-8" />
         </Button>
@@ -131,7 +144,7 @@ export default function SmartContact() {
                  {message.role === "user" && (
                   <Avatar className="h-8 w-8 bg-white/10">
                      <AvatarFallback className="bg-transparent text-white/70">
-                      <User className="h-5 w-5"/>
+                        {user?.photoURL ? <AvatarImage src={user.photoURL} alt={user.displayName || 'User'} /> : <User className="h-5 w-5"/>}
                      </AvatarFallback>
                   </Avatar>
                 )}
@@ -158,9 +171,9 @@ export default function SmartContact() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about our products..."
               className="flex-grow bg-white/5 border-white/10 placeholder-white/50"
-              disabled={isLoading}
+              disabled={isLoading || !user}
             />
-            <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className="bg-gradient-to-r from-primary to-accent">
+            <Button type="submit" size="icon" disabled={isLoading || !input.trim() || !user} className="bg-gradient-to-r from-primary to-accent">
               <Send className="h-4 w-4" />
             </Button>
           </form>
