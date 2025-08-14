@@ -33,17 +33,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = async () => {
     try {
+      setLoading(true);
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.error("Error signing in with Google", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const signOut = async () => {
     try {
+      setLoading(true);
       await firebaseSignOut(auth);
     } catch (error) {
       console.error("Error signing out", error);
+    } finally {
+      setLoading(false);
     }
   };
 

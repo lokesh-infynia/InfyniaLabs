@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageSquare, Send, Loader2, Infinity, User } from "lucide-react";
+import { MessageSquare, Send, Loader2, User } from "lucide-react";
 import { handleChat } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +23,18 @@ interface Message {
   content: string;
 }
 
+const InfinityLogo = () => (
+    <svg className="w-5 h-5 text-white" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25,50 C25,30 45,20 60,20 C80,20 100,40 100,50 C100,60 120,80 140,80 C160,80 175,65 175,50 C175,35 160,20 140,20 C120,20 100,40 100,50 C100,60 80,80 60,80 C40,80 25,70 25,50 Z" stroke="url(#g)" strokeWidth="15" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        <defs>
+        <linearGradient id="g" x1="25" y1="50" x2="175" y2="50" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="hsl(var(--primary))"/>
+            <stop offset="100%" stopColor="hsl(var(--accent))"/>
+        </linearGradient>
+        </defs>
+    </svg>
+)
+
 export default function SmartContact() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -31,7 +43,10 @@ export default function SmartContact() {
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      const viewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
+      if(viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
     }
   }, [messages]);
 
@@ -72,17 +87,17 @@ export default function SmartContact() {
     <Sheet>
       <SheetTrigger asChild>
         <Button
-          id="contact"
-          className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg bg-accent text-accent-foreground hover:bg-accent/90 focus:ring-accent"
+          id="contact-trigger"
+          className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg bg-gradient-to-r from-primary to-accent text-accent-foreground hover:opacity-90 focus:ring-accent"
           aria-label="Open smart contact chat"
         >
           <MessageSquare className="h-8 w-8" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col p-0">
+      <SheetContent className="flex flex-col p-0 bg-background border-border">
         <SheetHeader className="p-6 pb-4">
-          <SheetTitle className="font-headline text-2xl">Contact Us</SheetTitle>
-          <SheetDescription>
+          <SheetTitle className="font-headline text-2xl text-foreground">Contact Us</SheetTitle>
+          <SheetDescription className="text-white/70">
             Have a question? Our AI assistant is here to help you 24/7.
           </SheetDescription>
         </SheetHeader>
@@ -97,9 +112,9 @@ export default function SmartContact() {
                 )}
               >
                 {message.role === "assistant" && (
-                  <Avatar className="h-8 w-8 border-2 border-primary">
-                    <AvatarFallback className="bg-primary/20">
-                      <Infinity className="h-5 w-5 text-primary" />
+                  <Avatar className="h-8 w-8 border-2 border-primary/50 bg-primary/20 flex items-center justify-center">
+                    <AvatarFallback className="bg-transparent">
+                      <InfinityLogo />
                     </AvatarFallback>
                   </Avatar>
                 )}
@@ -107,15 +122,15 @@ export default function SmartContact() {
                   className={cn(
                     "max-w-xs rounded-lg p-3 text-sm",
                     message.role === "user"
-                      ? "bg-primary/90 text-primary-foreground"
-                      : "bg-muted"
+                      ? "bg-gradient-to-r from-primary to-accent text-white"
+                      : "bg-white/10 text-white/90"
                   )}
                 >
                   {message.content}
                 </div>
                  {message.role === "user" && (
-                  <Avatar className="h-8 w-8">
-                     <AvatarFallback>
+                  <Avatar className="h-8 w-8 bg-white/10">
+                     <AvatarFallback className="bg-transparent text-white/70">
                       <User className="h-5 w-5"/>
                      </AvatarFallback>
                   </Avatar>
@@ -124,28 +139,28 @@ export default function SmartContact() {
             ))}
             {isLoading && (
               <div className="flex items-start gap-3">
-                 <Avatar className="h-8 w-8 border-2 border-primary">
-                    <AvatarFallback className="bg-primary/20">
-                      <Infinity className="h-5 w-5 text-primary" />
+                 <Avatar className="h-8 w-8 border-2 border-primary/50 bg-primary/20 flex items-center justify-center">
+                    <AvatarFallback className="bg-transparent">
+                      <Loader2 className="h-5 w-5 animate-spin text-white" />
                     </AvatarFallback>
                   </Avatar>
-                <div className="bg-muted p-3 rounded-lg">
+                <div className="bg-white/10 p-3 rounded-lg">
                   <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                 </div>
               </div>
             )}
           </div>
         </ScrollArea>
-        <div className="p-4 border-t bg-background">
+        <div className="p-4 border-t border-border bg-background">
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about our products or mission..."
-              className="flex-grow"
+              placeholder="Ask about our products..."
+              className="flex-grow bg-white/5 border-white/10 placeholder-white/50"
               disabled={isLoading}
             />
-            <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+            <Button type="submit" size="icon" disabled={isLoading || !input.trim()} className="bg-gradient-to-r from-primary to-accent">
               <Send className="h-4 w-4" />
             </Button>
           </form>

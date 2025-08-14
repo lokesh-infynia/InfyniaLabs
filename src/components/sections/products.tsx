@@ -1,62 +1,99 @@
-import Image from "next/image";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import React from "react";
 
 const products = [
   {
-    name: "Synapse AI",
-    description: "An advanced neural interface for seamless human-computer interaction.",
-    image: "https://placehold.co/600x400.png",
-    hint: "neural interface",
+    status: "Live",
+    name: "BeatMyEMI — Debt Freedom Planner",
+    description: "Plan prepayments, simulate scenarios, cut interest, and track your debt‑free countdown.",
+    features: [
+      "Payoff strategy engine (avalanche / snowball / hybrid)",
+      "Prepayment simulations & impact on tenure",
+      "Alerts for dues, negotiation windows, milestones",
+    ],
+    cta: <Button className="w-full bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)] rounded-xl">Get BeatMyEMI</Button>,
   },
   {
-    name: "QuantumLeap",
-    description: "A quantum computing cloud platform for complex simulations and data analysis.",
-    image: "https://placehold.co/600x400.png",
-    hint: "quantum computer",
+    status: "In Development — Early Next Year",
+    name: "Budgeting — Plan, Track, Improve",
+    description: "Adaptive budgets, auto spend classification, cashflow forecasts, and safe‑to‑spend guidance.",
+    cta: <WaitlistForm formId="budgetingForm" thanksId="budgetingThanks" storageKey="waitlist_budgeting" />,
   },
   {
-    name: "Helios AutoML",
-    description: "An automated machine learning tool that simplifies building and deploying AI models.",
-    image: "https://placehold.co/600x400.png",
-    hint: "data visualization",
+    status: "In Development — Early Next Year",
+    name: "Health Vault & Immunity Support",
+    description: "A secure health record vault with doctor‑friendly summaries and lifestyle nudges to support immunity.",
+    cta: <WaitlistForm formId="healthForm" thanksId="healthThanks" storageKey="waitlist_health" />,
+    disclaimer: "Disclaimer: Infynia apps do not provide medical advice; they support clinical decision-making and personal record‑keeping. Always consult your healthcare professional.",
   },
 ];
 
+function WaitlistForm({formId, thanksId, storageKey}: {formId: string, thanksId: string, storageKey: string}) {
+    const { toast } = useToast();
+    const [submitted, setSubmitted] = React.useState(false);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData.entries());
+        
+        if (typeof window !== "undefined") {
+            const list = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            list.push({ ...data, ts: new Date().toISOString() });
+            localStorage.setItem(storageKey, JSON.stringify(list));
+        }
+
+        (e.target as HTMLFormElement).reset();
+        setSubmitted(true);
+        toast({
+            title: "Success!",
+            description: "Thanks! You’re on the waitlist.",
+        });
+    }
+
+    return (
+        <form id={formId} onSubmit={handleSubmit} className="mt-4 space-y-3">
+            <Input required type="text" name="name" placeholder="Your name" className="w-full px-4 py-3 rounded-xl bg-white/10 border-white/10 placeholder-white/50 h-auto" />
+            <Input required type="email" name="email" placeholder="Email" className="w-full px-4 py-3 rounded-xl bg-white/10 border-white/10 placeholder-white/50 h-auto" />
+            <Button type="submit" className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)] h-auto">Join Waitlist</Button>
+            {submitted && <p id={thanksId} className="text-emerald-300 text-sm">Thanks! You’re on the waitlist.</p>}
+        </form>
+    );
+}
+
 export default function Products() {
   return (
-    <section id="products" className="w-full py-12 md:py-24 lg:py-32">
+    <section id="products" className="w-full py-16 md:py-24">
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+        <div className="flex flex-col items-start justify-center space-y-4 text-left mb-10">
           <div className="space-y-2">
-            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-5xl">Our Innovations</h2>
-            <p className="mx-auto max-w-[900px] text-foreground/80 md:text-xl/relaxed">
-              Discover the products we've built to shape a smarter future.
-            </p>
+            <h2 className="font-headline text-3xl md:text-4xl">Our Products</h2>
           </div>
         </div>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
-            <Card key={product.name} className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardHeader>
-                <Image
-                  alt={product.name}
-                  className="aspect-video w-full overflow-hidden rounded-lg object-cover"
-                  height={340}
-                  src={product.image}
-                  width={600}
-                  data-ai-hint={product.hint}
-                />
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <CardTitle className="font-headline text-2xl mb-2">{product.name}</CardTitle>
-                <CardDescription>{product.description}</CardDescription>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full">
-                  Learn More
-                </Button>
-              </CardFooter>
+            <Card key={product.name} className="flex flex-col rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+                <CardHeader>
+                    <div className="text-[10px] uppercase tracking-widest text-white/60 mb-3">{product.status}</div>
+                    <CardTitle className="text-2xl font-semibold mb-2">{product.name}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                    <CardDescription className="text-white/80 mb-4">{product.description}</CardDescription>
+                    {product.features && (
+                        <ul className="text-white/70 text-sm list-disc ml-5 space-y-1 mb-6">
+                            {product.features.map(feature => <li key={feature}>{feature}</li>)}
+                        </ul>
+                    )}
+                </CardContent>
+                <CardFooter className="flex-col items-start">
+                    {product.cta}
+                    {product.disclaimer && <p className="text-white/60 text-xs mt-3">{product.disclaimer}</p>}
+                </CardFooter>
             </Card>
           ))}
         </div>

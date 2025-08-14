@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -23,12 +23,14 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body bg-background text-foreground antialiased">
         <AuthProvider>
+          <div className="gradient-orb absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full pointer-events-none"></div>
+          <div className="gradient-orb absolute top-1/3 -right-24 w-[480px] h-[480px] rounded-full pointer-events-none"></div>
           {children}
           <Toaster />
         </AuthProvider>

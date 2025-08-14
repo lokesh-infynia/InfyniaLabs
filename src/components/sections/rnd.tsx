@@ -1,29 +1,37 @@
-import Image from "next/image";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+const researchAreas = {
+    "Focus Areas": [
+        "Retrieval quality, grounding, hallucination resistance",
+        "Model compression, distillation, cost‑latency trade‑offs",
+        "Time‑series forecasting for cashflow & operations",
+        "Multimodal reasoning (text + tables + images + docs)",
+    ],
+    "What We Publish": [
+        "Evaluation frameworks and task‑specific leaderboards",
+        "Whitepapers, ablation studies, reproducible notebooks",
+        "Open‑source utilities for RAG, data cleaning, and evals",
+    ]
+}
 
 export default function Rnd() {
   return (
-    <section id="rnd" className="w-full py-12 md:py-24 lg:py-32 bg-card">
-      <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
-        <div className="space-y-4">
-          <div className="inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary font-medium">
-            Research & Development
-          </div>
-          <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            Innovating for Tomorrow
-          </h2>
-          <p className="max-w-[600px] text-card-foreground/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Our R&D department is the lifeblood of Infynia Labs. We are dedicated to exploring the uncharted territories of AI, from developing new learning algorithms to pioneering ethical AI frameworks. Our research ensures we stay ahead of the curve, turning bold ideas into reality.
-          </p>
-        </div>
-        <div className="flex justify-center">
-            <Image
-                alt="R&D"
-                className="overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-                height="450"
-                width="800"
-                src="https://placehold.co/800x450.png"
-                data-ai-hint="research lab"
-            />
+    <section id="rnd" className="w-full py-16 md:py-24">
+      <div className="container px-4 md:px-6">
+        <h2 className="font-headline text-3xl md:text-4xl mb-10">Research & Innovation</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {Object.entries(researchAreas).map(([title, items]) => (
+            <Card key={title} className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md p-6">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold mb-2">{title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="text-white/80 list-disc ml-5 space-y-1">
+                  {items.map(item => <li key={item}>{item}</li>)}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

@@ -12,15 +12,15 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
+      padding: '1.5rem', // 24px
       screens: {
-        '2xl': '1400px',
+        '2xl': '1280px', // max-w-7xl
       },
     },
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Space Grotesk', 'sans-serif'],
+        headline: ['Montserrat', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

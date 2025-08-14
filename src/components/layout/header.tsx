@@ -1,80 +1,68 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Infinity, LogIn, LogOut, UserCircle } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Menu } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
+
+const InfinityLogo = () => (
+    <svg className="w-8 h-8 glow" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M25,50 C25,30 45,20 60,20 C80,20 100,40 100,50 C100,60 120,80 140,80 C160,80 175,65 175,50 C175,35 160,20 140,20 C120,20 100,40 100,50 C100,60 80,80 60,80 C40,80 25,70 25,50 Z" stroke="url(#g)" strokeWidth="10" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        <defs>
+        <linearGradient id="g" x1="25" y1="50" x2="175" y2="50" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="hsl(var(--primary))"/>
+            <stop offset="100%" stopColor="hsl(var(--accent))"/>
+        </linearGradient>
+        </defs>
+    </svg>
+)
 
 export default function Header() {
-  const { user, loading, signInWithGoogle, signOut } = useAuth();
-
-  const getInitials = (name?: string | null) => {
-    if (!name) return "";
-    const names = name.split(" ");
-    if (names.length > 1) {
-      return `${names[0][0]}${names[1][0]}`;
-    }
-    return names[0][0];
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { user, signInWithGoogle, signOut } = useAuth();
+  
+  const navLinks = [
+    { href: "#mission", label: "Mission" },
+    { href: "#activities", label: "What We Do" },
+    { href: "#products", label: "Products" },
+    { href: "#rnd", label: "Research" },
+    { href: "#roadmap", label: "Roadmap" },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-7xl items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Infinity className="h-6 w-6 text-primary" />
-          <span className="font-headline font-bold">Infynia Labs</span>
+    <header className="sticky top-0 z-40 bg-black/30 backdrop-blur-md border-b border-white/10">
+      <div className="container flex items-center justify-between h-20">
+        <Link href="/" className="flex items-center gap-3">
+            <InfinityLogo />
+            <span className="font-headline text-xl tracking-tight">Infynia Labs</span>
         </Link>
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className="flex items-center space-x-1">
-            {loading ? (
-              <Skeleton className="h-8 w-20 rounded-md" />
-            ) : user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.photoURL ?? ""} alt={user.displayName ?? "User"} />
-                      <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {user.displayName}
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button onClick={signInWithGoogle} variant="default" size="sm">
-                <LogIn className="mr-2 h-4 w-4" />
-                Login
-              </Button>
-            )}
-          </nav>
+        <nav className="hidden md:flex items-center gap-8 text-white/80">
+          {navLinks.map(link => (
+            <Link key={link.href} href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
+          ))}
+        </nav>
+        <div className="flex items-center gap-4">
+            <a href="#contact" className="hidden md:inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+                Talk to Us
+            </a>
+            <div className="md:hidden">
+                <Button onClick={() => setMenuOpen(!menuOpen)} variant="ghost" size="icon" className="p-2 rounded-lg border border-white/10">
+                    <Menu />
+                </Button>
+            </div>
         </div>
       </div>
+      {menuOpen && (
+        <div className="md:hidden px-6 pb-4">
+            <div className="grid gap-2 text-white/90">
+                {navLinks.map(link => (
+                    <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} className="py-2 border-b border-white/10">{link.label}</a>
+                ))}
+                 <a href="#contact" onClick={() => setMenuOpen(false)} className="py-2">Talk to Us</a>
+            </div>
+        </div>
+      )}
     </header>
   );
 }
