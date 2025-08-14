@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCde_rvio_M5fL-sBAbfHj4Nrgg3rSbiCY",
   authDomain: "infynia-labs.firebaseapp.com",
   projectId: "infynia-labs",
-  storageBucket: "infynia-labs.firebasestorage.app",
+  storageBucket: "infynia-labs.appspot.com",
   messagingSenderId: "177304616146",
   appId: "1:177304616146:web:c0a17bdc95ffa9e11b410b"
 };
