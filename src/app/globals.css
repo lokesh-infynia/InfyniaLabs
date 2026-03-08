@@ -82,6 +82,24 @@
     filter: blur(30px);
     animation: float 12s ease-in-out infinite;
   }
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl;
+  }
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-primary;
+  }
+  .gradient-text-reverse {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+  .moving-border-gradient {
+    background: conic-gradient(
+      from 0deg,
+      hsl(var(--accent) / 0) 0deg,
+      hsl(var(--accent)) 60deg,
+      hsl(var(--primary)) 120deg,
+      hsl(var(--accent) / 0) 180deg
+    );
+  }
 }
 
 @keyframes float {

@@ -3,6 +3,7 @@
 import { smartContactChatbot } from "@/ai/flows/smart-contact-chatbot";
 import type { SmartContactChatbotInput } from "@/ai/flows/smart-contact-chatbot";
 import { db } from "@/lib/firebase-admin";
+import nodemailer from "nodemailer";
 
 export async function handleChat(
   input: SmartContactChatbotInput
@@ -44,6 +45,67 @@ export async function joinWaitlist(data: {
   } catch (error) {
     console.error("Error joining waitlist:", error);
     return { success: false, message: "Failed to join waitlist." };
+  }
+}
+
+export async function sendContactEmail(data: {
+  name: string;
+  email: string;
+  company?: string;
+  message: string;
+}): Promise<{ success: boolean; message: string }> {
+  try {
+    const { name, email, company, message } = data;
+    if (!name || !email || !message) {
+      return { success: false, message: "Name, email, and message are required." };
+    }
+
+    // Save to Firestore as backup
+    await db.collection("contact_submissions").add({
+      name,
+      email,
+      company: company || "",
+      message,
+      submittedAt: new Date().toISOString(),
+    });
+
+    // Send email via SMTP (configure SMTP_* env vars)
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+
+    if (smtpHost && smtpUser && smtpPass) {
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: Number(process.env.SMTP_PORT ?? 587),
+        secure: process.env.SMTP_SECURE === "true",
+        auth: { user: smtpUser, pass: smtpPass },
+      });
+
+      await transporter.sendMail({
+        from: `"Infynia Labs Contact" <${smtpUser}>`,
+        to: "support@infynialabs.com",
+        replyTo: email,
+        subject: `New Contact: ${name}${company ? ` from ${company}` : ""}`,
+        html: `
+          <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+            <h2 style="color:#0059A5;">New Contact Form Submission</h2>
+            <table style="width:100%;border-collapse:collapse;">
+              <tr><td style="padding:8px;font-weight:bold;width:120px;">Name</td><td style="padding:8px;">${name}</td></tr>
+              <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${email}">${email}</a></td></tr>
+              ${company ? `<tr><td style="padding:8px;font-weight:bold;">Company</td><td style="padding:8px;">${company}</td></tr>` : ""}
+              <tr><td style="padding:8px;font-weight:bold;vertical-align:top;">Message</td><td style="padding:8px;">${message.replace(/\n/g, "<br>")}</td></tr>
+            </table>
+          </div>
+        `,
+        text: `Name: ${name}\nEmail: ${email}${company ? `\nCompany: ${company}` : ""}\n\nMessage:\n${message}`,
+      });
+    }
+
+    return { success: true, message: "Message sent! We'll get back to you within 24 hours." };
+  } catch (error) {
+    console.error("Error sending contact email:", error);
+    return { success: false, message: "Failed to send message. Please try again." };
   }
 }
 

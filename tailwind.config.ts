@@ -79,10 +79,56 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        waveform: {
+          '0%, 100%': { height: '8px' },
+          '50%': { height: '32px' },
+        },
+        'waveform-sm': {
+          '0%, 100%': { height: '6px' },
+          '50%': { height: '20px' },
+        },
+        aurora: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        'beam-pulse': {
+          '0%, 100%': { opacity: '0.3' },
+          '50%': { opacity: '0.8' },
+        },
+        'spin-slow': {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        'pulse-ring': {
+          '0%': { transform: 'scale(1)', opacity: '0.8' },
+          '100%': { transform: 'scale(1.6)', opacity: '0' },
+        },
+        'float-up': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        waveform: 'waveform 1.2s ease-in-out infinite',
+        'waveform-sm': 'waveform-sm 1s ease-in-out infinite',
+        aurora: 'aurora 8s ease infinite',
+        'beam-pulse': 'beam-pulse 3s ease-in-out infinite',
+        'spin-slow': 'spin-slow 12s linear infinite',
+        'pulse-ring': 'pulse-ring 1.5s ease-out infinite',
+        'float-up': 'float-up 0.6s ease-out forwards',
+        shimmer: 'shimmer 2.5s linear infinite',
+      },
+      backgroundImage: {
+        'mesh-primary': 'radial-gradient(at 40% 20%, hsl(var(--primary) / 0.3) 0px, transparent 50%)',
+        'mesh-accent': 'radial-gradient(at 80% 0%, hsl(var(--accent) / 0.25) 0px, transparent 50%)',
+        'mesh-dark': 'radial-gradient(at 0% 80%, hsl(220 60% 5% / 0.8) 0px, transparent 50%)',
       },
     },
   },

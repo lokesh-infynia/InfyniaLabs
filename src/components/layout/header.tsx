@@ -23,11 +23,10 @@ export default function Header() {
   const { user, signInWithGoogle } = useAuth();
   
   const navLinks = [
-    { href: "#mission", label: "Mission" },
-    { href: "#activities", label: "What We Do" },
+    { href: "#features", label: "Features" },
+    { href: "#voice-demo", label: "Voice Agents" },
     { href: "#products", label: "Products" },
     { href: "#rnd", label: "Research" },
-    { href: "#roadmap", label: "Roadmap" },
   ];
 
   const handleTalkToUsClick = () => {
@@ -52,8 +51,11 @@ export default function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-            <Button onClick={handleTalkToUsClick} className="hidden md:inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-                Talk to Us
+            <Button
+              asChild
+              className="hidden md:inline-flex items-center px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-accent shadow-[0_4px_20px_rgba(0,187,212,0.25)] hover:shadow-[0_4px_30px_rgba(0,187,212,0.4)] transition-shadow"
+            >
+              <a href="#contact">Book a Demo</a>
             </Button>
             <div className="md:hidden">
                 <Button onClick={() => setMenuOpen(!menuOpen)} variant="ghost" size="icon" className="p-2 rounded-lg border border-white/10">
