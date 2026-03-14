@@ -10,8 +10,36 @@ import {
 } from "lucide-react";
 
 // ─── Config (set via .env.local) ──────────────────────────────────────────────
-const BACKEND_WS   = process.env.NEXT_PUBLIC_VOICE_BACKEND_WS_URL  ?? "ws://localhost:8000";
-const BACKEND_HTTP = process.env.NEXT_PUBLIC_VOICE_BACKEND_HTTP_URL ?? "http://localhost:8000";
+const RAW_BACKEND_WS = process.env.NEXT_PUBLIC_VOICE_BACKEND_WS_URL;
+const RAW_BACKEND_HTTP = process.env.NEXT_PUBLIC_VOICE_BACKEND_HTTP_URL;
+const BACKEND_HTTP = RAW_BACKEND_HTTP ?? "http://localhost:8000";
+
+// Compute a safe WS URL depending on whether the page is served over HTTPS.
+function normalizeWsUrl(rawWs?: string | undefined, httpFallback?: string) {
+  // Client-side: prefer secure wss when the page is HTTPS.
+  if (typeof window !== "undefined") {
+    const isHttpsPage = window.location.protocol === "https:";
+    if (rawWs) {
+      if (isHttpsPage && rawWs.startsWith("ws://")) {
+        return rawWs.replace(/^ws:/, "wss:");
+      }
+      return rawWs;
+    }
+    if (httpFallback) {
+      // Derive ws/wss from http/https
+      if (isHttpsPage) return httpFallback.replace(/^http:/, "wss:").replace(/^https:/, "wss:");
+      return httpFallback.replace(/^https:/, "ws:").replace(/^http:/, "ws:");
+    }
+    return isHttpsPage ? "wss://localhost:8000" : "ws://localhost:8000";
+  }
+
+  // Server-side: use rawWs or derive a ws:// from http fallback.
+  if (rawWs) return rawWs;
+  if (httpFallback) return httpFallback.replace(/^https?:/, "ws:");
+  return "ws://localhost:8000";
+}
+
+const BACKEND_WS = normalizeWsUrl(RAW_BACKEND_WS, RAW_BACKEND_HTTP);
 const DEMO_CUSTOMER_ID = process.env.NEXT_PUBLIC_DEMO_CUSTOMER_ID  ?? "";
 const DEMO_CAMPAIGN_ID = process.env.NEXT_PUBLIC_DEMO_CAMPAIGN_ID  ?? "Bike insurance Renew Interest";
 
